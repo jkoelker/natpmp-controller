@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - network.natpmp.jkoelker.github.io
+  resources:
+  - natpmps
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - network.natpmp.jkoelker.github.io
+  resources:
+  - natpmps/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - network.natpmp.jkoelker.github.io
+  resources:
+  - natpmps/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,28 @@
+---
+# permissions for end users to view natpmps.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: natpmp-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: natpmp-controller
+    app.kubernetes.io/part-of: natpmp-controller
+    app.kubernetes.io/managed-by: kustomize
+  name: natpmp-viewer-role
+rules:
+  - apiGroups:
+      - network.natpmp.jkoelker.github.io
+    resources:
+      - natpmps
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - network.natpmp.jkoelker.github.io
+    resources:
+      - natpmps/status
+    verbs:
+      - get

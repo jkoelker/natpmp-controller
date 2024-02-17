@@ -1,0 +1,32 @@
+---
+apiVersion: network.natpmp.jkoelker.github.io/v1
+kind: NatPMP
+metadata:
+  labels:
+    app.kubernetes.io/name: natpmp
+    app.kubernetes.io/instance: natpmp-sample
+    app.kubernetes.io/part-of: natpmp-controller
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: natpmp-controller
+  name: natpmp-sample
+spec:
+  protocol: TCP
+  externalPort: 8080
+  internalPort: 80
+  lifetime: 3600
+  gateway: 192.168.1.1
+  templates:
+    - |
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: example-service
+        namespace: default
+      spec:
+        type: NodePort
+        ports:
+          - port: {{ .InternalPort }}
+            nodePort: {{ .MappedExternalPort }}
+            protocol: TCP
+        selector:
+          app: example

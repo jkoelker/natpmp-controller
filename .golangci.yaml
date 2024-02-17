@@ -1,0 +1,84 @@
+---
+run:
+  timeout: 5m
+
+linters:
+  enable-all: true
+  disable:
+    - exhaustivestruct
+    - exhaustruct
+    - golint
+    - interfacer
+    - maligned
+    - paralleltest
+    - scopelint
+    - testpackage
+    - depguard
+
+linters-settings:
+  exhaustive:
+    default-signifies-exhaustive: true
+
+  funlen:
+    lines: 100
+    statements: 50
+
+  ireturn:
+    allow:
+      - anon
+      - error
+      - empty
+      - stdlib
+
+  gci:
+    custom-order: true
+    sections:
+      - standard
+      - default
+      - prefix(sigs.k8s.io,k8s.io)
+      - prefix(github.com/jkoelker/natpmp-controller)
+
+  goimports:
+    # put imports beginning with prefix after 3rd-party packages;
+    # it's a comma-separated list of prefixes
+    local-prefixes: github.com/jkoelker/natpmp-controller
+
+  tagliatelle:
+    case:
+      rules:
+        json: goCamel
+
+  wrapcheck:
+    ignoreSigs:
+      - .Errorf(
+      - errors.New(
+      - errors.Unwrap(
+      - .Wrap(
+      - .Wrapf(
+      - .WrapError(
+      - .WrapWarn(
+      - .WithMessage(
+      - .WithMessagef(
+      - .WithStack(
+      - .LogWrap(
+
+issues:
+  exclude-rules:
+    # Exclude funlen issues for TestFunctions to allow table testing
+    - source: "^func Test"
+      linters:
+        - funlen
+    # Exclude lll issues for long lines with go:generate
+    - linters:
+        - lll
+      source: "^//go:generate "
+    - linters:
+        - lll
+      source: "^//\\+kubebuilder:"
+    - linters:
+        - dupl
+        - goerr113
+      path: _test\.go
+
+  max-issues-per-linter: 0
+  max-same-issues: 0

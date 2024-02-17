@@ -1,0 +1,3 @@
+---
+resources:
+  - network_v1_natpmp.yaml
